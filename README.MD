@@ -20,7 +20,7 @@ A simple crud functionalities of a todo API
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
+| `id`      | `number` | **Required**. Id of item to fetch |
 
 #### add item
 ```http
@@ -40,7 +40,7 @@ body schema :
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
+| `id`      | `number` | **Required**. Id of item to fetch |
 
 
 ## Upcoming features:
