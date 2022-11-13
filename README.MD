@@ -47,4 +47,4 @@ body schema :
 
 - add users to the system provided by authentication mechanism
 - persist items to database
-- implement a simple ui to show items
+- add unit testing
