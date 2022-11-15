@@ -2,44 +2,62 @@ package controllers
 
 import (
 	"example/todo-with-goLang/model"
+	"example/todo-with-goLang/services"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 func GetTodos(context *gin.Context) {
-	context.IndentedJSON(http.StatusOK, "")
-}
 
-func AddTodos(context *gin.Context) {
-	var newTodo model.Todo
-
-	if err := context.BindJSON(&newTodo); err != nil {
+	todos, error := services.GetTodos()
+	if error != nil {
+		context.IndentedJSON(http.StatusInternalServerError, error)
 		return
 	}
-	// todos = append(todos, newTodo)
-	// context.IndentedJSON(http.StatusOK, todos)
+	context.IndentedJSON(http.StatusOK, todos)
+}
+
+func AddTodo(context *gin.Context) {
+	var newTodo model.TodoInput
+
+	if error := context.BindJSON(&newTodo); error != nil {
+		context.IndentedJSON(http.StatusInternalServerError, error)
+		return
+	}
+	createdTodo, error := services.AddTodo(&newTodo)
+	if error != nil {
+		context.IndentedJSON(http.StatusInternalServerError, error)
+		return
+	}
+	context.IndentedJSON(http.StatusOK, createdTodo)
 }
 
 func GetTodo(context *gin.Context) {
-	// id := context.Param("id")
-	// todo, err := getTodoById(id)
+	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
+	if err != nil {
+		context.IndentedJSON(http.StatusInternalServerError, err)
+		return
+	}
 
-	// if err != nil {
-	// 	context.IndentedJSON(http.StatusNotFound, gin.H{"message": "todo not found"})
-	// }
-	// context.IndentedJSON(http.StatusOK, todo)
+	todo, error := services.GetTodoById(id)
+	if error != nil {
+		context.IndentedJSON(http.StatusInternalServerError, error)
+		return
+	}
+	context.IndentedJSON(http.StatusOK, todo)
 }
 
-func ToggleTodoStatus(context *gin.Context) {
-	// id := context.Param("id")
-	// todo, err := getTodoById(id)
+// func ToggleTodoStatus(context *gin.Context) {
+// 	// id := context.Param("id")
+// 	// todo, err := getTodoById(id)
 
-	// if err != nil {
-	// 	context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Todo not found"})
-	// }
+// 	// if err != nil {
+// 	// 	context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Todo not found"})
+// 	// }
 
-	// todo.Completed = !todo.Completed
+// 	// todo.Completed = !todo.Completed
 
-	context.IndentedJSON(http.StatusOK, "todo")
-}
+// 	context.IndentedJSON(http.StatusOK, "todo")
+// }

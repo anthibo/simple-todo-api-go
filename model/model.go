@@ -6,9 +6,13 @@ import (
 )
 
 type Todo struct {
-	ID        string `json:"id" gorm:"primary_key"`
+	ID        int64  `json:"id" gorm:"primary_key;auto_increment;not_null"`
 	Item      string `json:"item"`
-	Completed bool   `json:"completed"`
+	Completed bool   `json:"completed" gorm:"default:false"`
+}
+
+type TodoInput struct {
+	Item string `json:"item"`
 }
 
 var DB *gorm.DB
