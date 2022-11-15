@@ -44,7 +44,6 @@ body schema :
 
 
 ## Upcoming features:
-
-- add users to the system provided by authentication mechanism
-- persist items to database
-- add unit testing
+ - add users to the system provided by authentication mechanism
+ - add unit testing
+ - benchmark and load test the application
