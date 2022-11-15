@@ -49,15 +49,18 @@ func GetTodo(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, todo)
 }
 
-// func ToggleTodoStatus(context *gin.Context) {
-// 	// id := context.Param("id")
-// 	// todo, err := getTodoById(id)
+func ToggleTodoStatus(context *gin.Context) {
+	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
 
-// 	// if err != nil {
-// 	// 	context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Todo not found"})
-// 	// }
+	if err != nil {
+		context.IndentedJSON(http.StatusInternalServerError, err)
+		return
+	}
 
-// 	// todo.Completed = !todo.Completed
-
-// 	context.IndentedJSON(http.StatusOK, "todo")
-// }
+	todo, error := services.ToggleTodoStatus(id)
+	if error != nil {
+		context.IndentedJSON(http.StatusInternalServerError, error)
+		return
+	}
+	context.IndentedJSON(http.StatusOK, todo)
+}
