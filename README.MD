@@ -15,7 +15,7 @@ A simple crud functionalities of a todo API
 #### Get item
 
 ```http
-  GET /api/todos/${id}
+  GET localhost:9090/todos/${id}
 ```
 
 | Parameter | Type     | Description                       |
@@ -24,19 +24,17 @@ A simple crud functionalities of a todo API
 
 #### add item
 ```http
-  POST /api/todos
+  POST localhost:9090/todos
 ```
 body schema : 
 ```json
    {
-        "id": "1",
         "item": "Clean Room",
-        "completed": false
     }
 ```
 #### toggle item
 ```http
-  PATCH /api/todos/${id}
+  PATCH localhost:9090/todos/${id}
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
