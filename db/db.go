@@ -1,19 +1,11 @@
-package model
+package db
 
 import (
+	"example/todo-with-goLang/models"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
-
-type Todo struct {
-	ID        int64  `json:"id" gorm:"primary_key;auto_increment;not_null"`
-	Item      string `json:"item"`
-	Completed bool   `json:"completed" gorm:"default:false"`
-}
-
-type TodoInput struct {
-	Item string `json:"item"`
-}
 
 var DB *gorm.DB
 
@@ -26,7 +18,7 @@ func ConnectDatabase() {
 		panic("Failed to connect to database!")
 	}
 
-	err = database.AutoMigrate(&Todo{})
+	err = database.AutoMigrate(&models.Todo{}, &models.User{})
 	if err != nil {
 		return
 	}
