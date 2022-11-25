@@ -1,22 +1,28 @@
 package services
 
 import (
-	"example/todo-with-goLang/model"
+	"example/todo-with-goLang/db"
+	"example/todo-with-goLang/dto"
+	"example/todo-with-goLang/models"
 )
 
-func GetTodos() ([]*model.Todo, error) {
-	var todos []*model.Todo
-	result := model.DB.Find(&todos)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return todos, nil
+type TodoService struct {
+	todoRepository models.TodoRepository
 }
 
-func AddTodo(todoInput *model.TodoInput) (*model.Todo, error) {
-	newTodo := model.Todo{Item: todoInput.Item, Completed: false}
+// TODO: implement todo service struct and add these function to the struct
+func (*TodoService) GetUserTasks(id int64) ([]*models.Todo, error) {
+	tasks, err := todoRepository.GetUserTasks(id)
+	if err != nil {
+		return nil, err
+	}
+	return tasks, nil
+}
 
-	result := model.DB.Create(&newTodo)
+func (*TodoService) AddTodo(todoInput *dto.TodoInput) (*models.Todo, error) {
+	newTodo := models.Todo{Item: todoInput.Item, Completed: false}
+
+	result := db.DB.Create(&newTodo)
 
 	if result.Error != nil {
 		return nil, result.Error
@@ -24,10 +30,10 @@ func AddTodo(todoInput *model.TodoInput) (*model.Todo, error) {
 	return &newTodo, nil
 }
 
-func GetTodoById(id int64) (*model.Todo, error) {
-	var todo *model.Todo
+func (*TodoService) GetTodoById(id int64) (*models.Todo, error) {
+	var todo *models.Todo
 
-	result := model.DB.Where(id).Find(&todo)
+	result := db.DB.Where(id).Find(&todo)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -35,16 +41,16 @@ func GetTodoById(id int64) (*model.Todo, error) {
 	return todo, nil
 }
 
-func ToggleTodoStatus(id int64) (*model.Todo, error) {
-	var todo *model.Todo
-	fetchResult := model.DB.Where(id).Find(&todo)
+func ToggleTodoStatus(id int64) (*models.Todo, error) {
+	var todo *models.Todo
+	fetchResult := db.DB.Where(id).Find(&todo)
 
 	if fetchResult.Error != nil {
 		return nil, fetchResult.Error
 	}
 	todo.Completed = !todo.Completed
 
-	updateResult := model.DB.Save(&todo)
+	updateResult := db.DB.Save(&todo)
 
 	if updateResult.Error != nil {
 		return nil, fetchResult.Error
